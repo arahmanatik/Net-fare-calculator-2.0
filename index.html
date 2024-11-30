@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Citycom Net Fare Calculator</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 400px;
+        margin: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      }
+      .citycom-logo {
+        width: 120px;
+      }
+
+      h2 {
+        color: rgb(71, 71, 71);
+        font-size: 16px;
+      }
+      rgb(94, 94, 94) label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+      }
+
+      input {
+        width: calc(100% - 16px);
+        padding: 10px;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      #netAirlineFare {
+        margin-top: 15px;
+        font-weight: bold;
+        font-size: 16px;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img class="citycom-logo" src="citycom-logo.png" alt="" />
+
+      <h2>Net Fare Calculator</h2>
+
+      <label for="baseFare">Base Fare:</label>
+      <input
+        type="number"
+        id="baseFare"
+        placeholder="Enter Base Fare"
+        oninput="calculateNetAirlineFare()"
+      />
+
+      <label for="tax">TAX:</label>
+      <input
+        type="number"
+        id="tax"
+        placeholder="Enter TAX"
+        oninput="calculateNetAirlineFare()"
+      />
+
+      <label for="gdsCommission">GDS Commission (%):</label>
+      <input
+        type="number"
+        id="gdsCommission"
+        placeholder="Enter GDS Commission"
+        value="7"
+        oninput="calculateNetAirlineFare()"
+      />
+
+      <label for="ait">AIT (%):</label>
+      <input
+        type="number"
+        id="ait"
+        placeholder="Enter AIT"
+        value="0.3"
+        oninput="calculateNetAirlineFare()"
+      />
+
+      <div id="netAirlineFare">Net Airline Fare: 0.00 BDT</div>
+    </div>
+
+    <script>
+      const baseFareInput = document.getElementById("baseFare");
+      const gdsCommissionInput = document.getElementById("gdsCommission");
+      const aitInput = document.getElementById("ait");
+      const taxInput = document.getElementById("tax");
+      const netAirlineFareDisplay = document.getElementById("netAirlineFare");
+
+      // Set default values if input is null or undefined
+      gdsCommissionInput.value = gdsCommissionInput.value || 0;
+      aitInput.value = aitInput.value || 0;
+
+      function calculateNetAirlineFare() {
+        let baseFare = parseFloat(baseFareInput.value) || 0;
+        let gdsCommissionPercentage = parseFloat(gdsCommissionInput.value) || 0;
+        let aitPercentage = parseFloat(aitInput.value) || 0;
+        const tax = parseFloat(taxInput.value) || 0;
+
+        const gdsCommission = (gdsCommissionPercentage / 100) * baseFare;
+        const ait = (aitPercentage / 100) * (baseFare - gdsCommission);
+
+        const netAirlineFare = baseFare - gdsCommission + ait + tax;
+        const formattedNetAirlineFare = formatCurrency(netAirlineFare, "BDT");
+
+        netAirlineFareDisplay.innerText =
+          "Net Airline Fare: " + formattedNetAirlineFare;
+      }
+
+      function formatCurrency(amount, currency) {
+        return amount.toFixed(2) + " " + currency;
+      }
+    </script>
+  </body>
+</html>
