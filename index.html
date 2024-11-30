@@ -116,7 +116,7 @@
         const tax = parseFloat(taxInput.value) || 0;
 
         const gdsCommission = (gdsCommissionPercentage / 100) * baseFare;
-        const ait = (aitPercentage / 100) * (baseFare - gdsCommission);
+        const ait = (aitPercentage / 100) * (baseFare + tax + gdsCommission);
 
         const netAirlineFare = baseFare - gdsCommission + ait + tax;
         const formattedNetAirlineFare = formatCurrency(netAirlineFare, "BDT");
